@@ -1,0 +1,82 @@
+[
+  {
+    "customer_id": 1001,
+    "name": "Nguyen Van A",
+    "email": "vana.nguyen@example.com",
+    "city": "Ho Chi Minh City",
+    "signup_date": "2025-03-14",
+    "segment": "VIP"
+  },
+  {
+    "customer_id": 1002,
+    "name": "Tran Thi B",
+    "email": "thib.tran@example.com",
+    "city": "Hanoi",
+    "signup_date": "2025-06-02",
+    "segment": "Regular"
+  },
+  {
+    "customer_id": 1003,
+    "name": "Le Van C",
+    "email": "vanc.le@example.com",
+    "city": "Da Nang",
+    "signup_date": "2026-01-20",
+    "segment": "New"
+  },
+  {
+    "customer_id": 1004,
+    "name": "Pham Thi D",
+    "email": "thid.pham@example.com",
+    "city": "Ho Chi Minh City",
+    "signup_date": "2024-11-11",
+    "segment": "VIP"
+  },
+  {
+    "customer_id": 1005,
+    "name": "Hoang Van E",
+    "email": "vane.hoang@example.com",
+    "city": "Can Tho",
+    "signup_date": "2025-09-05",
+    "segment": "Regular"
+  },
+  {
+    "customer_id": 1006,
+    "name": "Emily Carter",
+    "email": "emily.carter@example.com",
+    "city": "Singapore",
+    "signup_date": "2025-12-01",
+    "segment": "Regular"
+  },
+  {
+    "customer_id": 1007,
+    "name": "Vo Thi F",
+    "email": "thif.vo@example.com",
+    "city": "Hue",
+    "signup_date": "2026-02-18",
+    "segment": "New"
+  },
+  {
+    "customer_id": 1008,
+    "name": "Dang Van G",
+    "email": "vang.dang@example.com",
+    "city": "Nha Trang",
+    "signup_date": "2025-07-22",
+    "segment": "Regular"
+  },
+  {
+    "customer_id": 1009,
+    "name": "Bui Thi H",
+    "email": "thih.bui@example.com",
+    "city": "Hai Phong",
+    "signup_date": "2024-08-30",
+    "segment": "VIP"
+  },
+  {
+    "customer_id": 1010,
+    "name": "James Nguyen",
+    "email": "james.nguyen@example.com",
+    "city": "Sydney",
+    "signup_date": "2026-03-10",
+    "segment": "New"
+  }
+]

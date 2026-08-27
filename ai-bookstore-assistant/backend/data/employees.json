@@ -1,0 +1,44 @@
+[
+  {
+    "employee_id": 1,
+    "name": "Ngo Thi Mai",
+    "role": "Store Manager",
+    "department": "Management",
+    "hire_date": "2024-02-01"
+  },
+  {
+    "employee_id": 2,
+    "name": "Truong Van Nam",
+    "role": "Customer Support Lead",
+    "department": "Support",
+    "hire_date": "2024-05-15"
+  },
+  {
+    "employee_id": 3,
+    "name": "Ly Thi Oanh",
+    "role": "Warehouse Coordinator",
+    "department": "Logistics",
+    "hire_date": "2025-01-10"
+  },
+  {
+    "employee_id": 4,
+    "name": "Phan Van Phuc",
+    "role": "Data Analyst",
+    "department": "Analytics",
+    "hire_date": "2025-08-01"
+  },
+  {
+    "employee_id": 5,
+    "name": "Dinh Thi Quyen",
+    "role": "Marketing Specialist",
+    "department": "Marketing",
+    "hire_date": "2025-03-20"
+  },
+  {
+    "employee_id": 6,
+    "name": "Mac Van Son",
+    "role": "Support Agent",
+    "department": "Support",
+    "hire_date": "2026-01-05"
+  }
+]

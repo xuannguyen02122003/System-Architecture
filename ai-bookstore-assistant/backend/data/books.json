@@ -1,0 +1,137 @@
+[
+  {
+    "book_id": 1,
+    "title": "The Silent Library",
+    "author": "Ha Mai",
+    "genre": "Fiction",
+    "price": 12.5,
+    "stock": 40,
+    "isbn": "978-1-01-000001"
+  },
+  {
+    "book_id": 2,
+    "title": "Quantum Mornings",
+    "author": "Le Tran",
+    "genre": "Science",
+    "price": 18.0,
+    "stock": 25,
+    "isbn": "978-1-01-000002"
+  },
+  {
+    "book_id": 3,
+    "title": "Saigon Rain",
+    "author": "Nguyen Thi Lan",
+    "genre": "Fiction",
+    "price": 9.99,
+    "stock": 60,
+    "isbn": "978-1-01-000003"
+  },
+  {
+    "book_id": 4,
+    "title": "The Data-Driven Mind",
+    "author": "Pham Quoc",
+    "genre": "Technology",
+    "price": 25.0,
+    "stock": 30,
+    "isbn": "978-1-01-000004"
+  },
+  {
+    "book_id": 5,
+    "title": "Little Star's Journey",
+    "author": "Do Bich",
+    "genre": "Children",
+    "price": 7.5,
+    "stock": 80,
+    "isbn": "978-1-01-000005"
+  },
+  {
+    "book_id": 6,
+    "title": "Empires of the Mekong",
+    "author": "Tran Van Hung",
+    "genre": "History",
+    "price": 21.0,
+    "stock": 20,
+    "isbn": "978-1-01-000006"
+  },
+  {
+    "book_id": 7,
+    "title": "Cooking with Lemongrass",
+    "author": "Vu Thi Hoa",
+    "genre": "Non-Fiction",
+    "price": 16.0,
+    "stock": 35,
+    "isbn": "978-1-01-000007"
+  },
+  {
+    "book_id": 8,
+    "title": "Deep Work Habits",
+    "author": "Cao Minh",
+    "genre": "Non-Fiction",
+    "price": 14.0,
+    "stock": 50,
+    "isbn": "978-1-01-000008"
+  },
+  {
+    "book_id": 9,
+    "title": "Neural Gardens",
+    "author": "Le Tran",
+    "genre": "Science",
+    "price": 19.5,
+    "stock": 15,
+    "isbn": "978-1-01-000009"
+  },
+  {
+    "book_id": 10,
+    "title": "The Last Lantern",
+    "author": "Ha Mai",
+    "genre": "Fiction",
+    "price": 11.0,
+    "stock": 45,
+    "isbn": "978-1-01-000010"
+  },
+  {
+    "book_id": 11,
+    "title": "Python for Analysts",
+    "author": "Pham Quoc",
+    "genre": "Technology",
+    "price": 29.0,
+    "stock": 22,
+    "isbn": "978-1-01-000011"
+  },
+  {
+    "book_id": 12,
+    "title": "Whispers of Hue",
+    "author": "Nguyen Thi Lan",
+    "genre": "Fiction",
+    "price": 10.5,
+    "stock": 38,
+    "isbn": "978-1-01-000012"
+  },
+  {
+    "book_id": 13,
+    "title": "Brave Little Boat",
+    "author": "Do Bich",
+    "genre": "Children",
+    "price": 6.99,
+    "stock": 90,
+    "isbn": "978-1-01-000013"
+  },
+  {
+    "book_id": 14,
+    "title": "A Short History of Tea",
+    "author": "Tran Van Hung",
+    "genre": "History",
+    "price": 17.5,
+    "stock": 28,
+    "isbn": "978-1-01-000014"
+  },
+  {
+    "book_id": 15,
+    "title": "Mindful Money",
+    "author": "Cao Minh",
+    "genre": "Non-Fiction",
+    "price": 15.5,
+    "stock": 33,
+    "isbn": "978-1-01-000015"
+  }
+]
