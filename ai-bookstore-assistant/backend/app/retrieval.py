@@ -1,11 +1,4 @@
 """
-The data retrieval layer.
-
-This is the deterministic core of the system. Each function is a "tool" the
-agent can call. Crucially, every tool returns not just the records it found, but
-also a human-readable description of the *query it ran* — because the execution
-trace needs to show "what filter was applied", not just "some rows came back".
-
 Design rules kept deliberately simple:
   - Structured data (customers, books, orders) -> real SQL over SQLite.
   - Unstructured data (policy documents) -> keyword search (BM25). No vector DB;
@@ -13,7 +6,6 @@ Design rules kept deliberately simple:
   - No tool ever invents data. If nothing matches, it returns zero records and
     the caller decides how to respond.
 """
-# Lets us write modern type hints like `int | None` even on Python 3.9, by
 # treating all annotations as strings that are never evaluated at runtime.
 from __future__ import annotations
 
