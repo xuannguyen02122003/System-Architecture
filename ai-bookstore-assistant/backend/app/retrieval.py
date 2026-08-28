@@ -1,4 +1,11 @@
 """
+The data retrieval layer.
+
+This is the deterministic core of the system. Each function is a "tool" the
+agent can call. Crucially, every tool returns not just the records it found, but
+also a human-readable description of the *query it ran* — because the execution
+trace needs to show "what filter was applied", not just "some rows came back".
+
 Design rules kept deliberately simple:
   - Structured data (customers, books, orders) -> real SQL over SQLite.
   - Unstructured data (policy documents) -> keyword search (BM25). No vector DB;
@@ -6,6 +13,7 @@ Design rules kept deliberately simple:
   - No tool ever invents data. If nothing matches, it returns zero records and
     the caller decides how to respond.
 """
+# Lets us write modern type hints like `int | None` even on Python 3.9, by
 # treating all annotations as strings that are never evaluated at runtime.
 from __future__ import annotations
 
@@ -14,12 +22,6 @@ import re
 
 from .db import get_connection, rows_to_dicts
 from .config import DOCS_DIR
-
-try:
-    from rank_bm25 import BM25Okapi
-    _HAS_BM25 = True
-except ImportError:  # keep the module importable even if the dep is missing
-    _HAS_BM25 = False
 
 
 @dataclass
@@ -206,6 +208,20 @@ def _load_documents() -> list[dict]:
     return docs
 
 
+# Very common words carry no meaning for document search. With only a handful
+# of documents, keyword statistics are coarse, so we drop these from the *query*
+# to stop words like "what/is/the" from dominating the ranking. (The documents
+# themselves are indexed in full.)
+_STOPWORDS = {
+    "a", "an", "the", "is", "are", "was", "were", "be", "do", "does", "did",
+    "i", "you", "we", "they", "it", "what", "which", "who", "how", "when",
+    "where", "why", "to", "of", "in", "on", "at", "for", "and", "or", "my",
+    "me", "our", "your", "that", "this", "with", "about", "can", "could",
+    "would", "please", "have", "has", "had", "get", "got", "tell", "show",
+    "list", "give", "there", "your", "any",
+}
+
+
 def _tokenize(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]+", text.lower())
 
@@ -225,18 +241,18 @@ def _best_snippet(text: str, query_tokens: list[str], width: int = 240) -> str:
 def search_documents(query: str, top_k: int = 2) -> RetrievalResult:
     """Keyword-rank the documents against the query and return the best matches."""
     docs = _load_documents()
-    query_tokens = _tokenize(query)
+    all_tokens = _tokenize(query)
+    # Prefer meaningful tokens; fall back to all tokens if nothing is left.
+    query_tokens = [t for t in all_tokens if t not in _STOPWORDS] or all_tokens
     if not docs or not query_tokens:
         return RetrievalResult(source="documents",
                                query=f"keywords={query_tokens}", records=[])
 
-    if _HAS_BM25:
-        corpus = [_tokenize(d["text"]) for d in docs]
-        bm25 = BM25Okapi(corpus)
-        scores = bm25.get_scores(query_tokens)
-    else:  # simple fallback: count keyword overlaps
-        scores = [sum(_tokenize(d["text"]).count(t) for t in query_tokens) for d in docs]
-
+    # Keyword-frequency scoring: for each document, count how often the query's
+    # meaningful terms appear. Simple, exact, and predictable — the right choice
+    # for a small document set (unlike BM25, whose corpus statistics are unstable
+    # when there are only a handful of documents).
+    scores = [sum(_tokenize(d["text"]).count(t) for t in query_tokens) for d in docs]
     ranked = sorted(zip(docs, scores), key=lambda p: p[1], reverse=True)
     records = []
     for doc, score in ranked[:top_k]:

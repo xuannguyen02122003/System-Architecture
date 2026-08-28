@@ -89,7 +89,32 @@ python -m pytest -v
 ```
 
 You should see the database build (`customers: 10 rows`, `books: 15 rows`, ...)
-and **7 passing tests**.
+and **12 passing tests**.
+
+## Try it in the terminal
+
+You can ask a question right now — no web UI or API key needed yet — and watch
+the execution trace print live:
+
+```bash
+python -m scripts.ask "What books did Nguyen Van A buy in July?"
+```
+
+Example output (abridged):
+
+```
+* [ 1] REQUEST_RECEIVED  User question received
+  ok [ 3] QUERY_ANALYSIS    Analyze the question   ->  query=(intent = order_history)
+  ok [ 7] DATA_RETRIEVAL    Look up customer 'Nguyen Van A'  ->  source=customers | records=1
+  ok [ 9] DATA_RETRIEVAL    Search this customer's orders    ->  query=(customer_id=1001 AND date>=2026-07-01 AND date<=2026-07-31) | records=2
+  ok [11] DATA_RETRIEVAL    Fetch the books in those orders  ->  source=order_items | records=4
+* [14] COMPLETED         Response ready
+ANSWER:   In July 2026, Nguyen Van A purchased: The Data-Driven Mind, Python for
+Analysts, Deep Work Habits (x2), Mindful Money. (Orders #5007, #5012.)
+```
+
+This is the same pipeline (and the same trace events) the web app will use — the
+frontend will just render these events as an animated diagram instead of text.
 
 ## Demo questions this dataset supports
 
@@ -103,7 +128,7 @@ and **7 passing tests**.
 ## Roadmap
 
 1. ✅ Scaffold + mock dataset + retrieval layer (with tests)
-2. ⬜ Orchestrator + execution-event model (stub LLM, runs with no API key)
+2. ✅ Orchestrator + execution-event model (stub LLM, runs with no API key)
 3. ⬜ SSE streaming of trace events
 4. ⬜ LLM integration (OpenAI-compatible)
 5. ⬜ Execution-trace visualization (frontend)
