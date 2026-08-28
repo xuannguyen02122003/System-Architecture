@@ -116,6 +116,32 @@ Analysts, Deep Work Habits (x2), Mindful Money. (Orders #5007, #5012.)
 This is the same pipeline (and the same trace events) the web app will use — the
 frontend will just render these events as an animated diagram instead of text.
 
+## Run the web API (backend server)
+
+From the `backend/` folder with the venv active:
+
+```bash
+uvicorn app.main:app --reload --port 8000
+```
+
+Endpoints:
+
+- `GET  /api/health` — liveness check.
+- `POST /api/ask` — body `{"question": "..."}`; responds with a live
+  **Server-Sent Events** stream of the execution trace, then an `answer` event.
+- `GET  /docs` — FastAPI's auto-generated API explorer.
+
+Watch the stream from the command line:
+
+```bash
+curl -N -X POST http://127.0.0.1:8000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question":"What is the return policy?"}'
+```
+
+You'll see `event: trace` messages arrive one by one (paced ~250ms apart for
+visibility — set `SSE_STEP_DELAY_MS=0` to disable), then a final `event: answer`.
+
 ## Demo questions this dataset supports
 
 | Question | Path exercised |
@@ -129,7 +155,7 @@ frontend will just render these events as an animated diagram instead of text.
 
 1. ✅ Scaffold + mock dataset + retrieval layer (with tests)
 2. ✅ Orchestrator + execution-event model (stub LLM, runs with no API key)
-3. ⬜ SSE streaming of trace events
+3. ✅ FastAPI server + SSE streaming of trace events
 4. ⬜ LLM integration (OpenAI-compatible)
 5. ⬜ Execution-trace visualization (frontend)
 6. ⬜ Chat UI + end-to-end wiring
