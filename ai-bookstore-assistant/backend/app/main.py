@@ -32,7 +32,7 @@ from pydantic import BaseModel
 
 from .orchestrator import run_query
 
-app = FastAPI(title="Chapter One Books — AI Data Assistant")
+app = FastAPI(title="Kamiya Bookstore — AI Data Assistant")
 
 # Allow the React dev server (a different port) to call this API during
 # development. For a local PoC, allowing all origins is fine and keeps setup easy.

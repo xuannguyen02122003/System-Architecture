@@ -1,4 +1,4 @@
-# Project Defense Cheat Sheet — Chapter One Books · AI Data Assistant
+# Project Defense Cheat Sheet — Kamiya Bookstore · AI Data Assistant
 
 *Read this in 2 minutes before talking to the company. Every line is grounded in
 the actual code.*

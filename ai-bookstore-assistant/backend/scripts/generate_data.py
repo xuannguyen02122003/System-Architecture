@@ -1,5 +1,5 @@
 """
-Generate the mock dataset for "Chapter One Books".
+Generate the mock dataset for "Kamiya Bookstore".
 
 Why a generator instead of hand-written files?
   - The data is *curated and deterministic* (no randomness), so demo questions
@@ -152,7 +152,7 @@ def write_csv(path: Path, data: list[dict]):
 # --------------------------------------------------------------------------- #
 # 5. Unstructured documents (policies / company info / FAQ)
 # --------------------------------------------------------------------------- #
-RETURN_POLICY = """CHAPTER ONE BOOKS - RETURN POLICY
+RETURN_POLICY = """KAMIYA BOOKSTORE - RETURN POLICY
 
 We want you to love every book you buy from us.
 
@@ -165,7 +165,7 @@ We want you to love every book you buy from us.
    and digital products (e-books, gift cards) cannot be returned.
 
 3. HOW TO RETURN
-   Email support@chapterone.example with your order number. We will send a
+   Email support@kamiya.example with your order number. We will send a
    prepaid return label within 2 business days.
 
 4. REFUND TIMING
@@ -178,7 +178,7 @@ We want you to love every book you buy from us.
    will replace it at no cost.
 """
 
-SHIPPING_POLICY = """CHAPTER ONE BOOKS - SHIPPING POLICY
+SHIPPING_POLICY = """KAMIYA BOOKSTORE - SHIPPING POLICY
 
 DELIVERY TIMES
   - Ho Chi Minh City & Hanoi: 1-2 business days
@@ -217,11 +217,11 @@ To make good books easy to find and affordable for every reader in Vietnam.
 - Team: a small crew across Management, Support, Logistics, Analytics, and Marketing
 
 ## Contact
-- Support: support@chapterone.example
+- Support: support@kamiya.example
 - Hours: Monday to Friday, 9:00 AM - 6:00 PM (ICT)
 """
 
-FAQ = """CHAPTER ONE BOOKS - FREQUENTLY ASKED QUESTIONS
+FAQ = """KAMIYA BOOKSTORE - FREQUENTLY ASKED QUESTIONS
 
 Q: What payment methods do you accept?
 A: We accept Visa, Mastercard, domestic ATM cards, MoMo, and cash on delivery

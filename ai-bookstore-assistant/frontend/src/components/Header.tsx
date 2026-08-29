@@ -8,7 +8,7 @@ export function Header() {
           </div>
           <div>
             <h1 className="text-sm font-semibold tracking-tight text-slate-100">
-              Chapter One Books · AI Data Assistant
+              Kamiya Bookstore · AI Data Assistant
             </h1>
             <p className="text-xs text-slate-400">
               Ask a question and watch the system retrieve the answer, step by step.

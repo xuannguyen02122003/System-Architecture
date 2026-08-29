@@ -1,4 +1,4 @@
-# Chapter One Books — AI Data Assistant
+# Kamiya Bookstore — AI Data Assistant
 
 A proof-of-concept AI information-retrieval system for a mock online bookstore.
 A user asks a natural-language question; an AI agent figures out which data it
@@ -73,7 +73,7 @@ ai-bookstore-assistant/
 
 ## The mock data
 
-An online bookstore, **Chapter One Books** (Ho Chi Minh City): 15 books across 6
+An online bookstore, **Kamiya Bookstore** (Ho Chi Minh City): 15 books across 6
 genres, 10 customers (New/Regular/VIP), 19 orders with line items, 6 employees,
 and 4 policy/company documents. The data is curated so demo questions have exact,
 repeatable answers.

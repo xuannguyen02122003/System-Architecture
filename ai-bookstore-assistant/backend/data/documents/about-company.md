@@ -1,8 +1,8 @@
-# About Chapter One Books
+# About Kamiya Bookstore
 
 An online bookstore based in Ho Chi Minh City.
 
-Chapter One Books was founded in 2024 as a small independent online bookstore. We
+Kamiya Bookstore was founded in 2024 as a small independent online bookstore. We
 curate fiction, non-fiction, science, history, technology, and children's titles
 from Vietnamese and international authors.
 
@@ -16,5 +16,5 @@ To make good books easy to find and affordable for every reader in Vietnam.
 - Team: a small crew across Management, Support, Logistics, Analytics, and Marketing
 
 ## Contact
-- Support: support@chapterone.example
+- Support: support@kamiya.example
 - Hours: Monday to Friday, 9:00 AM - 6:00 PM (ICT)

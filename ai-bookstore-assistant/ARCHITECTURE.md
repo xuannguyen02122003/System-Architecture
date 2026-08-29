@@ -1,4 +1,4 @@
-# Chapter One Books — System Architecture & Diagrams
+# Kamiya Bookstore — System Architecture & Diagrams
 
 Diagrams generated **from the actual code** in this repository (verified file by
 file). Where a detail is conditional or unconfirmed, it is marked explicitly.
