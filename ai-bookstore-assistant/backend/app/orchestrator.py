@@ -18,7 +18,7 @@ from typing import Callable, Optional
 
 from . import retrieval
 from .events import Tracer, TraceEvent, Phase
-from .llm import BaseLLM, StubLLM, QueryPlan
+from .llm import BaseLLM, get_llm, QueryPlan
 
 
 def _select_sources(intent: str) -> list[str]:
@@ -40,7 +40,7 @@ def run_query(question: str,
     `on_event` is called live as each event is emitted (used by the SSE stage);
     if omitted, events are simply collected and returned.
     """
-    llm = llm or StubLLM()
+    llm = llm or get_llm()
     tracer = Tracer(on_event=on_event)
 
     tracer.mark(Phase.REQUEST_RECEIVED, "User question received", question=question)

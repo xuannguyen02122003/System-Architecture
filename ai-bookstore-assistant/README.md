@@ -7,9 +7,9 @@ documents (policies), and answers **only** from what it found. The signature
 feature is a live **System Architecture / Execution Trace** panel that shows,
 step by step, what the system is doing.
 
-> This README grows as the project is built. It currently documents the
-> foundation (data + retrieval layer). Backend API, LLM, streaming, and UI
-> follow in later stages.
+> Status: the full stack is in place — mock data, retrieval layer, orchestrator
+> with a live execution trace, a FastAPI + SSE backend, an OpenAI-compatible LLM
+> adapter (optional; a deterministic stub runs without a key), and a React UI.
 
 ## Why this design (the short version)
 
@@ -43,20 +43,32 @@ ai-bookstore-assistant/
 ├─ README.md
 ├─ backend/
 │  ├─ requirements.txt
+│  ├─ .env.example         # copy to .env to enable a real LLM
 │  ├─ app/
 │  │  ├─ config.py         # paths, company name, LLM settings (one source of truth)
 │  │  ├─ db.py             # SQLite connection helper
-│  │  └─ retrieval.py      # the deterministic retrieval "tools"
+│  │  ├─ retrieval.py      # the deterministic retrieval "tools"
+│  │  ├─ events.py         # the execution-trace event model + Tracer
+│  │  ├─ llm.py            # LLM interface + deterministic stub + get_llm() factory
+│  │  ├─ llm_openai.py     # real OpenAI-compatible implementation (optional)
+│  │  ├─ orchestrator.py   # the analyze→select→retrieve→synthesize pipeline
+│  │  └─ main.py           # FastAPI app: /api/health and streaming /api/ask (SSE)
 │  ├─ scripts/
 │  │  ├─ generate_data.py  # writes the mock data files (deterministic)
-│  │  └─ load_data.py      # loads the files into bookstore.db
-│  ├─ tests/
-│  │  └─ test_retrieval.py # pins the demo scenarios to expected data
+│  │  ├─ load_data.py      # loads the files into bookstore.db
+│  │  └─ ask.py            # ask a question from the terminal, watch the trace
+│  ├─ tests/               # retrieval, orchestrator, LLM, and API tests
 │  └─ data/
 │     ├─ books.json, customers.json, employees.json
 │     ├─ orders.csv, order_items.csv
 │     └─ documents/        # return-policy.txt, shipping-policy.txt, about-company.md, faq.txt
-└─ (frontend/ — added in a later stage)
+└─ frontend/
+   ├─ package.json, vite.config.ts, tailwind.config.js, ...
+   └─ src/
+      ├─ App.tsx           # state + folds trace events into pipeline nodes
+      ├─ api.ts            # fetch-based SSE client
+      ├─ types.ts          # shared event types (mirrors backend)
+      └─ components/       # Header, ChatPanel, TracePanel, TraceNode
 ```
 
 ## The mock data
@@ -89,7 +101,8 @@ python -m pytest -v
 ```
 
 You should see the database build (`customers: 10 rows`, `books: 15 rows`, ...)
-and **12 passing tests**.
+and the full backend suite pass (**22 tests**). See `TESTING.md` for the full
+test matrix.
 
 ## Try it in the terminal
 
@@ -142,6 +155,56 @@ curl -N -X POST http://127.0.0.1:8000/api/ask \
 You'll see `event: trace` messages arrive one by one (paced ~250ms apart for
 visibility — set `SSE_STEP_DELAY_MS=0` to disable), then a final `event: answer`.
 
+## (Optional) Use a real LLM
+
+Without an API key, the app runs on a deterministic stub — perfect for a
+reliable demo. To use a real model instead, copy `backend/.env.example` to
+`backend/.env` and set your key:
+
+```
+OPENAI_API_KEY=sk-...
+LLM_MODEL=gpt-4o-mini
+```
+
+The app auto-detects the key on startup (`get_llm()` in `app/llm.py`). Nothing
+else changes — the LLM only does query analysis and answer wording; all data
+retrieval stays deterministic and grounded.
+
+## Frontend (the web UI)
+
+The UI is a React + TypeScript + Vite + Tailwind app in `frontend/`. From the
+`frontend/` folder (with the backend already running):
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the URL it prints (default http://localhost:5173). It talks to the
+backend at http://127.0.0.1:8000 — override with `VITE_API_BASE` in a
+`frontend/.env` file if needed.
+
+## Run the full app (quickstart)
+
+Two terminals:
+
+```bash
+# Terminal 1 — backend
+cd backend
+python -m venv .venv && .venv\Scripts\activate      # (Windows; use source .venv/bin/activate on macOS/Linux)
+pip install -r requirements.txt
+python -m scripts.load_data
+uvicorn app.main:app --reload --port 8000
+
+# Terminal 2 — frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Open the frontend URL, type a question (or click an example), and watch the
+System Architecture panel light up step by step.
+
 ## Demo questions this dataset supports
 
 | Question | Path exercised |
@@ -156,7 +219,7 @@ visibility — set `SSE_STEP_DELAY_MS=0` to disable), then a final `event: answe
 1. ✅ Scaffold + mock dataset + retrieval layer (with tests)
 2. ✅ Orchestrator + execution-event model (stub LLM, runs with no API key)
 3. ✅ FastAPI server + SSE streaming of trace events
-4. ⬜ LLM integration (OpenAI-compatible)
-5. ⬜ Execution-trace visualization (frontend)
-6. ⬜ Chat UI + end-to-end wiring
-7. ⬜ Test matrix + polish + demo script
+4. ✅ LLM integration (OpenAI-compatible, optional; stub fallback)
+5. ✅ Execution-trace visualization (frontend)
+6. ✅ Chat UI + end-to-end wiring
+7. ✅ Test matrix + polish + demo script — see `TESTING.md` and `DEMO.md`

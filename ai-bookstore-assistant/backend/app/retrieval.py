@@ -227,15 +227,34 @@ def _tokenize(text: str) -> list[str]:
 
 
 def _best_snippet(text: str, query_tokens: list[str], width: int = 240) -> str:
-    """Return a short excerpt from the document around the first keyword hit."""
-    lower = text.lower()
-    for tok in query_tokens:
-        idx = lower.find(tok)
-        if idx != -1:
-            start = max(0, idx - width // 3)
-            snippet = text[start:start + width].strip().replace("\n", " ")
-            return ("..." if start > 0 else "") + snippet + "..."
-    return text[:width].strip().replace("\n", " ") + "..."
+    """Return a clean excerpt centred on the first keyword hit.
+
+    Whitespace is collapsed and the excerpt is trimmed to whole words, so it
+    never cuts a word in half — much nicer to read in the answer.
+    """
+    collapsed = " ".join(text.split())            # normalise newlines/spacing
+    lower = collapsed.lower()
+
+    hits = [pos for pos in (lower.find(t) for t in query_tokens) if pos != -1]
+    first_hit = min(hits) if hits else -1
+
+    if first_hit == -1:
+        start, end = 0, min(len(collapsed), width)
+    else:
+        start = max(0, first_hit - width // 3)
+        end = min(len(collapsed), start + width)
+
+    excerpt = collapsed[start:end]
+    prefix = "... " if start > 0 else ""
+    suffix = " ..." if end < len(collapsed) else ""
+
+    # Drop any partial word left at a trimmed edge.
+    if prefix and " " in excerpt:
+        excerpt = excerpt.split(" ", 1)[1]
+    if suffix and " " in excerpt:
+        excerpt = excerpt.rsplit(" ", 1)[0]
+
+    return f"{prefix}{excerpt.strip()}{suffix}"
 
 
 def search_documents(query: str, top_k: int = 2) -> RetrievalResult:

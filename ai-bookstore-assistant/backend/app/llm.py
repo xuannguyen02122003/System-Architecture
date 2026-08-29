@@ -98,12 +98,13 @@ def extract_person_name(text: str) -> str | None:
     """Grab the most likely person name: the longest run of capitalized words
     that aren't question words or month names. Deterministic and DB-free — if
     the guessed name isn't a real customer, retrieval simply finds nothing."""
-    tokens = re.findall(r"[A-Za-z]+", text)
+    tokens = re.findall(r"\w+", text)
     runs: list[list[str]] = []
     current: list[str] = []
     for tok in tokens:
         is_name_like = (
-            tok[:1].isupper()
+            tok.isalpha()               # excludes "Q2", "2026", etc.
+            and tok[:1].isupper()
             and tok not in _NON_NAME_WORDS
             and tok.lower() not in _MONTHS
         )
@@ -137,6 +138,22 @@ class BaseLLM:
 
     def synthesize(self, question: str, plan: QueryPlan, context: dict) -> str:
         raise NotImplementedError
+
+
+def get_llm() -> "BaseLLM":
+    """Return the real OpenAI-backed LLM if an API key is configured, otherwise
+    the deterministic stub. This one function is the entire 'plug in a real
+    model' switch — set OPENAI_API_KEY in backend/.env and the app uses it."""
+    from .config import LLM_API_KEY
+    if LLM_API_KEY:
+        try:
+            from .llm_openai import OpenAILLM
+            return OpenAILLM()
+        except Exception:
+            # If the OpenAI client can't be created, degrade gracefully to the
+            # stub rather than crashing the whole app.
+            return StubLLM()
+    return StubLLM()
 
 
 class StubLLM(BaseLLM):

@@ -67,3 +67,27 @@ def test_ask_unknown_customer_streams_not_found():
     assert "NOT_FOUND" in phases
     answers = [d for t, d in events if t == "answer"]
     assert "couldn't find" in answers[0]["answer"].lower()
+
+
+def test_ask_empty_question_streams_error():
+    resp = client.post("/api/ask", json={"question": "   "})
+    events = _parse_sse(resp.text)
+    assert any(t == "error" for t, _ in events)
+
+
+def test_retrieval_error_is_surfaced_not_crashed(monkeypatch):
+    # Simulate a data-layer failure and confirm it becomes a visible ERROR event
+    # plus a stream 'error' — the server must not 500 or hang.
+    import app.retrieval as retrieval
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("simulated database failure")
+
+    monkeypatch.setattr(retrieval, "find_customer", boom)
+    resp = client.post("/api/ask",
+                       json={"question": "What did Nguyen Van A buy in July?"})
+    assert resp.status_code == 200
+    events = _parse_sse(resp.text)
+    phases = [d.get("phase") for t, d in events if t == "trace"]
+    assert "ERROR" in phases
+    assert any(t == "error" for t, _ in events)

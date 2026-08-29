@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* A gentle entrance for each new trace node as it streams in. */
+@keyframes nodeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-node-in {
+  animation: nodeIn 0.28s ease-out both;
+}
+
+/* The connector line "grows" downward between nodes. */
+@keyframes growLine {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.animate-line {
+  transform-origin: top;
+  animation: growLine 0.28s ease-out both;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}

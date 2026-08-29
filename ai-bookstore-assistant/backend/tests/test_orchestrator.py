@@ -54,3 +54,14 @@ def test_unknown_intent_asks_to_rephrase():
     result = run_query("Tell me a joke about penguins")
     assert result["intent"] == "unknown"
     assert "rephrase" in result["answer"].lower()
+
+
+def test_known_customer_but_no_orders_in_period():
+    # Le Van C is a real customer, but has no orders in December 2026.
+    result = run_query("What did Le Van C buy in December 2026?")
+    assert result["intent"] == "order_history"
+    answer = result["answer"].lower()
+    assert "couldn't find" in answer or "no orders" in answer
+    # The customer WAS found (so this is 'no orders', not 'no such customer').
+    assert any(e["source"] == "customers" and e.get("records_found") == 1
+               for e in result["events"])
